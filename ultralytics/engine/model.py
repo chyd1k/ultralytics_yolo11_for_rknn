@@ -707,6 +707,9 @@ class Model(nn.Module):
                 nms (bool): Add Non-Maximum Suppression (NMS) module to model.
                 simplify (bool): Simplify ONNX model.
 
+                # fix
+                num_channels (int): number of channels (1 or 3)
+
         Returns:
             (str): The path to the exported model file.
 
@@ -729,6 +732,8 @@ class Model(nn.Module):
             "data": None,
             "device": None,  # reset to avoid multi-GPU errors
             "verbose": False,
+            # fix
+            "num_channels": kwargs.get("num_channels", None)
         }  # method defaults
         args = {**self.overrides, **custom, **kwargs, "mode": "export"}  # highest priority args on the right
         return Exporter(overrides=args, _callbacks=self.callbacks)(model=self.model)
